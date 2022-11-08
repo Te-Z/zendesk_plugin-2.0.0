@@ -16,7 +16,17 @@ buildscript {
 rootProject.allprojects {
     repositories {
         google()
+        mavenCentral()
         maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
+
+        all { ArtifactRepository repo ->
+            if (repo instanceof MavenArtifactRepository) {
+                if (repo.url.toString().startsWith('https://jcenter.bintray.com/')) {
+                    remove repo
+                    add(mavenCentral())
+                }
+            }
+        }
     }
 }
 
